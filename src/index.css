@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: "Calculator";
+    src: url(./assets/Calculator.ttf) format("truetype");
+  }
+}
