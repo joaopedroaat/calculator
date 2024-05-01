@@ -3,7 +3,7 @@ import { useRef } from "react";
 import clickSound from "./assets/click-sound.mp3";
 
 function App() {
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const audioRef = useRef(new Audio(clickSound));
   const Key = ({ value }: { value: string }) => {
     return (
       <button
@@ -13,11 +13,9 @@ function App() {
         onClick={() => {
           if (audioRef.current) {
             const audio = audioRef.current;
-            if (!audio.paused) {
-              audio.currentTime = 0;
-            } else {
-              audio.play();
-            }
+            audio.pause();
+            audio.currentTime = 0;
+            audio.play();
           }
         }}
       >
@@ -27,8 +25,7 @@ function App() {
   };
   return (
     <>
-      <main className="flex h-screen items-center justify-center bg-pink-100 bg-pink-400">
-        <audio ref={audioRef} src={clickSound} />
+      <main className="flex h-screen items-center justify-center bg-pink-400">
         <section className="flex flex-col gap-4 size-80 rounded-xl bg-pink-300 p-4 shadow-md text-pink-100">
           {/* Display */}
           <div className="y-2 w-full rounded-xl bg-pink-200 px-4 text-right font-display text-4xl">
