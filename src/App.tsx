@@ -1,8 +1,9 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import clickSound from "./assets/click-sound.mp3";
 
 function App() {
+  const [buffer, setBuffer] = useState("0");
   const audioRef = useRef(new Audio(clickSound));
   const Key = ({ value }: { value: string }) => {
     return (
@@ -29,7 +30,7 @@ function App() {
         <section className="flex flex-col gap-4 size-80 rounded-xl bg-pink-300 p-4 shadow-md text-pink-100">
           {/* Display */}
           <div className="y-2 w-full rounded-xl bg-pink-200 px-4 text-right font-display text-4xl">
-            00
+            {buffer}
           </div>
 
           {/* Keys */}
@@ -56,7 +57,7 @@ function App() {
             <Key value="0" />
             <Key value="." />
             <Key value="±" />
-            <Key value="$" />
+            <Key value="=" />
           </div>
         </section>
       </main>
