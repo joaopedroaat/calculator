@@ -47,8 +47,15 @@ function App() {
         // Just switch operator
         setOperator(symbol);
         break;
-      // If key pressed before is a number, store current buffer
+      case "√":
+        if (previousKey === "=") {
+          setTotal(Math.sqrt(nBuff));
+        } else {
+          setBuffer(String(Math.sqrt(nBuff)));
+        }
+        break;
       case "=":
+        // If key pressed before is a number, store current buffer
         if (!isNaN(Number(previousKey))) {
           setPreviousNumber(nBuff);
         }
