@@ -61,6 +61,10 @@ function App() {
           setTotal(calculate(total, nBuff, operator));
         }
         break;
+      case "CE":
+        setTotal(0);
+        setOperator("");
+        break;
     }
   };
 
