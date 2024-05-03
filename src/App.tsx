@@ -13,6 +13,8 @@ function App() {
   const [operator, setOperator] = useState("");
   // The current total
   const [total, setTotal] = useState(0);
+  // Tells if calculator is on
+  const [isCalculatorOn, setIsCalculatorOn] = useState(true);
 
   const audioRef = useRef(new Audio(clickSound));
 
@@ -90,12 +92,8 @@ function App() {
         setBuffer(String(result));
         break;
       case "CE":
-        setTotal(0);
-        setOperator("");
-        setBuffer("0");
-        setPreviousNumber(0);
+        reset();
         break;
-
       case ".":
         if (!buffer.includes(".")) setBuffer(buffer + ".");
         else if (buffer.endsWith("."))
@@ -104,6 +102,10 @@ function App() {
       case "±":
         if (!buffer.startsWith("-")) setBuffer("-" + buffer);
         else setBuffer(buffer.slice(1, buffer.length));
+        break;
+      case "off":
+        setIsCalculatorOn(false);
+        setBuffer("--");
         break;
     }
   };
@@ -123,6 +125,13 @@ function App() {
     }
   };
 
+  const reset = () => {
+    setTotal(0);
+    setOperator("");
+    setBuffer("0");
+    setPreviousNumber(0);
+  };
+
   const Key = ({ value }: { value: string }) => {
     return (
       <button
@@ -136,6 +145,14 @@ function App() {
             audio.currentTime = 0;
             audio.play();
           }
+
+          if (value === "on") {
+            reset();
+            setIsCalculatorOn(true);
+            return;
+          }
+
+          if (!isCalculatorOn) return;
 
           !isNaN(Number(value)) ? handleNumber(value) : handleSymbol(value);
 
