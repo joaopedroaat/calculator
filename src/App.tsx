@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import clickSound from "./assets/click-sound.mp3";
 
@@ -16,14 +16,13 @@ function App() {
 
   const audioRef = useRef(new Audio(clickSound));
 
-  useEffect(() => {
-    setBuffer(String(total));
-  }, [total]);
-
   const resetBufferSymbols = ["+", "-", "*", "÷", "="];
   const handleNumber = (number: string) => {
     // Clear buffer for new inputs
     if (buffer === "0" || resetBufferSymbols.includes(previousKey)) {
+      if (previousKey === "=") {
+        setTotal(0);
+      }
       setBuffer(number);
     } else {
       // Otherwise just append the text to the current buffer
@@ -38,39 +37,45 @@ function App() {
       case "-":
       case "*":
       case "÷":
-        // If previous key is a number
-        if (!isNaN(Number(previousKey))) {
+        // If previous key is a number or sqrt
+        if (!isNaN(Number(previousKey)) || previousKey === "√") {
           // If the total is already set, calculate the total with the buffer; otherwise, just set total = buffer.
-          total ? setTotal(calculate(total, nBuff, operator)) : setTotal(nBuff);
+          const result = total ? calculate(total, nBuff, operator) : nBuff;
+
+          setTotal(result);
+          setBuffer(String(result));
         }
 
         // Just switch operator
         setOperator(symbol);
         break;
       case "√":
+        const sqrt = Math.sqrt(nBuff);
         if (previousKey === "=") {
-          setTotal(Math.sqrt(nBuff));
-        } else {
-          setBuffer(String(Math.sqrt(nBuff)));
+          setTotal(sqrt);
         }
+        setBuffer(String(sqrt));
         break;
       case "=":
+        console.log(total, nBuff, operator);
         // If key pressed before is a number, store current buffer
         if (!isNaN(Number(previousKey))) {
           setPreviousNumber(nBuff);
         }
 
-        if (previousKey === "=") {
-          // Re-do the previous operation
-          setTotal(calculate(total, previousNumber, operator));
-        } else {
-          // Finish last operation
-          setTotal(calculate(total, nBuff, operator));
-        }
+        // Re-do previous operation if last key is =, otherwise just calculate the pending operation
+        const result =
+          previousKey === "="
+            ? calculate(total, previousNumber, operator)
+            : calculate(total, nBuff, operator);
+
+        setTotal(result);
+        setBuffer(String(result));
         break;
       case "CE":
         setTotal(0);
         setOperator("");
+        setBuffer("0");
         break;
     }
   };
