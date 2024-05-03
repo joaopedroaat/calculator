@@ -41,7 +41,8 @@ function App() {
         if (
           !isNaN(Number(previousKey)) ||
           previousKey === "√" ||
-          previousKey === "%"
+          previousKey === "%" ||
+          previousKey === "."
         ) {
           // If the total is already set, calculate the total with the buffer; otherwise, just set total = buffer.
           const result = total ? calculate(total, nBuff, operator) : nBuff;
@@ -93,6 +94,12 @@ function App() {
         setOperator("");
         setBuffer("0");
         setPreviousNumber(0);
+        break;
+
+      case ".":
+        if (!buffer.includes(".")) setBuffer(buffer + ".");
+        else if (buffer.endsWith("."))
+          setBuffer(buffer.slice(0, buffer.length - 1));
         break;
     }
   };
