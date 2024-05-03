@@ -15,10 +15,11 @@ function App() {
   const [total, setTotal] = useState(0);
   // Tells if calculator is on
   const [isCalculatorOn, setIsCalculatorOn] = useState(true);
+  const [isSoundOn, setIsSoundOn] = useState(true);
 
   const audioRef = useRef(new Audio(clickSound));
 
-  const actLikeNumberSymbols = ["%", "√", ".", "±"];
+  const actLikeNumberSymbols = ["%", "√", ".", "±", "♪"];
   const resetBufferSymbols = ["+", "-", "*", "÷", "="];
 
   const handleNumber = (number: string) => {
@@ -107,6 +108,9 @@ function App() {
         setIsCalculatorOn(false);
         setBuffer("--");
         break;
+      case "♪":
+        setIsSoundOn(!isSoundOn);
+        break;
     }
   };
 
@@ -130,6 +134,7 @@ function App() {
     setOperator("");
     setBuffer("0");
     setPreviousNumber(0);
+    setIsSoundOn(true);
   };
 
   const Key = ({ value }: { value: string }) => {
@@ -139,7 +144,7 @@ function App() {
           value === "+" && "row-span-2"
         }`}
         onClick={() => {
-          if (audioRef.current) {
+          if (audioRef.current && isSoundOn) {
             const audio = audioRef.current;
             audio.pause();
             audio.currentTime = 0;
