@@ -38,7 +38,11 @@ function App() {
       case "*":
       case "÷":
         // If previous key is a number or sqrt
-        if (!isNaN(Number(previousKey)) || previousKey === "√") {
+        if (
+          !isNaN(Number(previousKey)) ||
+          previousKey === "√" ||
+          previousKey === "%"
+        ) {
           // If the total is already set, calculate the total with the buffer; otherwise, just set total = buffer.
           const result = total ? calculate(total, nBuff, operator) : nBuff;
 
@@ -56,8 +60,20 @@ function App() {
         }
         setBuffer(String(sqrt));
         break;
+      case "%":
+        setBuffer(String(nBuff / 100));
+        break;
       case "=":
-        console.log(total, nBuff, operator);
+        // If there is no total, it means the user clicked a number and clicked = right after
+        // In this case we want to store the number to the total
+        if (!total) {
+          setTotal(nBuff);
+          return;
+        }
+
+        // This means that the user selected a number and did nothing with it, so the operation cant be re-done
+        if (!operator) return;
+
         // If key pressed before is a number, store current buffer
         if (!isNaN(Number(previousKey))) {
           setPreviousNumber(nBuff);
@@ -76,6 +92,7 @@ function App() {
         setTotal(0);
         setOperator("");
         setBuffer("0");
+        setPreviousNumber(0);
         break;
     }
   };
