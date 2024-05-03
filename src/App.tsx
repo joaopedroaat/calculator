@@ -16,7 +16,9 @@ function App() {
 
   const audioRef = useRef(new Audio(clickSound));
 
+  const actLikeNumberSymbols = ["%", "√", ".", "±"];
   const resetBufferSymbols = ["+", "-", "*", "÷", "="];
+
   const handleNumber = (number: string) => {
     // Clear buffer for new inputs
     if (buffer === "0" || resetBufferSymbols.includes(previousKey)) {
@@ -37,12 +39,10 @@ function App() {
       case "-":
       case "*":
       case "÷":
-        // If previous key is a number or sqrt
+        // If previous key is a number
         if (
           !isNaN(Number(previousKey)) ||
-          previousKey === "√" ||
-          previousKey === "%" ||
-          previousKey === "."
+          actLikeNumberSymbols.includes(previousKey)
         ) {
           // If the total is already set, calculate the total with the buffer; otherwise, just set total = buffer.
           const result = total ? calculate(total, nBuff, operator) : nBuff;
@@ -100,6 +100,10 @@ function App() {
         if (!buffer.includes(".")) setBuffer(buffer + ".");
         else if (buffer.endsWith("."))
           setBuffer(buffer.slice(0, buffer.length - 1));
+        break;
+      case "±":
+        if (!buffer.startsWith("-")) setBuffer("-" + buffer);
+        else setBuffer(buffer.slice(1, buffer.length));
         break;
     }
   };
