@@ -171,8 +171,8 @@ function App() {
 
   return (
     <>
-      <main className="flex h-screen items-center justify-center bg-pink-400">
-        <section className="flex flex-col gap-4 size-80 rounded-xl bg-pink-300 p-4 shadow-md text-pink-100">
+      <main className="px-4 flex h-screen items-center justify-center bg-pink-400">
+        <section className="flex flex-col gap-4 size-64 sm:size-80 rounded-xl bg-pink-300 p-4 shadow-md text-pink-100">
           {/* Display */}
           <div className="px-4 py-2 w-full rounded-xl bg-pink-200  text-right font-display text-4xl overflow-x-auto overflow-y-hidden scroll-m-0 scroll-p-0 scrollbar-thin scrollbar-track-[transparent] scrollbar-thumb-pink-400">
             {buffer}
